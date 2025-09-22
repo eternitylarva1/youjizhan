@@ -1,4 +1,4 @@
-package EliteBeforeFire.modcore;
+package Youjizhan.modcore;
 
 
 import basemod.*;
@@ -13,28 +13,24 @@ import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.localization.Keyword;
 import com.megacrit.cardcrawl.localization.RelicStrings;
 import com.megacrit.cardcrawl.localization.UIStrings;
-import com.megacrit.cardcrawl.map.RoomTypeAssigner;
 import com.megacrit.cardcrawl.rooms.AbstractRoom;
-import com.megacrit.cardcrawl.rooms.RestRoom;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 
 import static com.megacrit.cardcrawl.core.Settings.language;
 import static com.megacrit.cardcrawl.core.Settings.seed;
-import static com.megacrit.cardcrawl.dungeons.AbstractDungeon.map;
 
 
 @SpireInitializer
-public class eliteBeforeFire implements StartActSubscriber,PostDungeonInitializeSubscriber,PostInitializeSubscriber,EditKeywordsSubscriber,OnStartBattleSubscriber, PostBattleSubscriber , EditStringsSubscriber, EditRelicsSubscriber,OnPlayerTurnStartSubscriber { // 实现接口
-    public eliteBeforeFire() {
+public class youjizhan implements StartActSubscriber,PostDungeonInitializeSubscriber,PostInitializeSubscriber,EditKeywordsSubscriber,OnStartBattleSubscriber, PostBattleSubscriber , EditStringsSubscriber, EditRelicsSubscriber,OnPlayerTurnStartSubscriber { // 实现接口
+    public youjizhan() {
         BaseMod.subscribe(this); // 告诉basemod你要订阅事件
     }
     public static int turn=0;
-    public static final String MyModID = "eliteBeforeFire";
+    public static final String MyModID = "youjizhan";
     ModPanel settingsPanel = new ModPanel();
     public static SpireConfig config;
     public static boolean hasselected=false;
@@ -43,7 +39,7 @@ public class eliteBeforeFire implements StartActSubscriber,PostDungeonInitialize
 
     public static void initialize() throws IOException {
 
-        new eliteBeforeFire();
+        new youjizhan();
 
 
     }
@@ -68,8 +64,8 @@ public class eliteBeforeFire implements StartActSubscriber,PostDungeonInitialize
         } else {
             lang = "ENG"; // 如果没有相应语言的版本，默认加载英语
         }
-    BaseMod.loadCustomStringsFile(RelicStrings.class, "eliteBeforeFireResources/localization/" + lang + "/relics.json");
-        BaseMod.loadCustomStringsFile(UIStrings.class, "eliteBeforeFireResources/localization/" + lang + "/ui.json");
+    BaseMod.loadCustomStringsFile(RelicStrings.class, "YoujizhanResources/localization/" + lang + "/relics.json");
+        BaseMod.loadCustomStringsFile(UIStrings.class, "YoujizhanResources/localization/" + lang + "/ui.json");
 
     }
     public static float getYPos(float y) {
@@ -110,7 +106,7 @@ firemap.put(i,istrue);
             lang = "ZHS";
         }
 
-        String json = Gdx.files.internal("eliteBeforeFireResources/localization/" + lang + "/keywords.json")
+        String json = Gdx.files.internal("YoujizhanResources/localization/" + lang + "/keywords.json")
                 .readString(String.valueOf(StandardCharsets.UTF_8));
         Keyword[] keywords = gson.fromJson(json, Keyword[].class);
 
