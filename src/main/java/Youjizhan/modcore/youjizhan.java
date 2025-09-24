@@ -1,7 +1,9 @@
 package Youjizhan.modcore;
 
 
+import Youjizhan.relics.ArtOfYouji;
 import basemod.*;
+import basemod.helpers.RelicType;
 import basemod.interfaces.*;
 import com.badlogic.gdx.Gdx;
 import com.evacipated.cardcrawl.modthespire.lib.SpireConfig;
@@ -13,6 +15,8 @@ import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.localization.Keyword;
 import com.megacrit.cardcrawl.localization.RelicStrings;
 import com.megacrit.cardcrawl.localization.UIStrings;
+import com.megacrit.cardcrawl.relics.AbstractRelic;
+import com.megacrit.cardcrawl.relics.ArtOfWar;
 import com.megacrit.cardcrawl.rooms.AbstractRoom;
 
 import java.io.IOException;
@@ -53,7 +57,7 @@ public class youjizhan implements StartActSubscriber,PostDungeonInitializeSubscr
 
     @Override
     public void receiveEditRelics() {
-        
+        BaseMod.addRelic(new ArtOfYouji(), RelicType.SHARED);
     }
 
     @Override
@@ -86,17 +90,7 @@ public class youjizhan implements StartActSubscriber,PostDungeonInitializeSubscr
 
     }
    public static void initializeHashmap(){
-        if (AbstractDungeon.player==null|| !CardCrawlGame.isInARun()){
-            return;
-        }
-       com.megacrit.cardcrawl.random.Random rng=new com.megacrit.cardcrawl.random.Random(seed);
 
-        for(int i=0;i<1000;i++){
-            boolean istrue;
-            istrue=rng.randomBoolean(0.7f);
-firemap.put(i,istrue);
-
-        }
    }
     @Override
     public void receiveEditKeywords() {
@@ -126,6 +120,7 @@ firemap.put(i,istrue);
 
     @Override
     public void receivePostDungeonInitialize() {
-        initializeHashmap();
+        AbstractRelic relic=new ArtOfYouji();
+        relic.instantObtain();
     }
 }

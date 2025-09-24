@@ -1,9 +1,9 @@
 {
   "modid": "youjizhan",
-  "name": "boss前火堆变精英",
+  "name": "游击战",
   "author_list": ["Dieyou"],
-  "description": "作者@b站蝴蝶是幼虫，怪物死亡时，剩下的怪物会尝试逃跑到下一场战斗伏击你",
-  "version": "0.1.4",
+  "description": "作者@b站蝴蝶是幼虫，非boss房间的怪物死亡时，剩下的怪物会尝试逃跑到下一场战斗伏击你",
+  "version": "0.1.6",
   "sts_version": "12-22-2020",
   "mts_version": "3.23.2",
   "dependencies": ["basemod","stslib"]
