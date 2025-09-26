@@ -90,7 +90,7 @@ am2.usePreBattleAction();
     }
 
     public void onMonsterDeath(AbstractMonster m) {
-        if (AbstractDungeon.getCurrRoom() instanceof MonsterRoomBoss) {
+        if (AbstractDungeon.getCurrRoom() instanceof MonsterRoomBoss&&!(m.type== AbstractMonster.EnemyType.BOSS)) {
             return;
         }
 
@@ -106,7 +106,7 @@ am2.usePreBattleAction();
                     }
                     }
 
-                this.addToTop(new EscapeAction(monster));
+                this.addToBot(new EscapeAction(monster));
                 this.MonstersEscaped.add(new Customyoujisave(monster.getClass().toString(),monster.currentHealth,monster.maxHealth));
                 if (!(monster.currentHealth==0))
                 this.tips.add(new PowerTip(monster.name,"剩余血量："+String.valueOf(monster.currentHealth)));
