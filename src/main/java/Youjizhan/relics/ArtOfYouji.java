@@ -19,6 +19,7 @@ import com.megacrit.cardcrawl.powers.DexterityPower;
 import com.megacrit.cardcrawl.powers.MinionPower;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 import com.megacrit.cardcrawl.relics.GremlinHorn;
+import com.megacrit.cardcrawl.rooms.AbstractRoom;
 import com.megacrit.cardcrawl.rooms.MonsterRoom;
 import com.megacrit.cardcrawl.rooms.MonsterRoomBoss;
 import com.megacrit.cardcrawl.vfx.MegaSpeechBubble;
@@ -36,7 +37,7 @@ public class ArtOfYouji extends CustomRelic  implements CustomSavable<ArrayList<
     // 点击音效
     private static final LandingSound LANDING_SOUND = LandingSound.FLAT;
     private final ArrayList<Customyoujisave> MonstersEscaped = new ArrayList<>();
-
+    private static  boolean hasused=false;
 
     public ArtOfYouji() {
         super(ID, ImageMaster.loadImage("YoujizhanResources/images/relics/artOfyouji.png"), RELIC_TIER, LANDING_SOUND);
@@ -53,6 +54,7 @@ public class ArtOfYouji extends CustomRelic  implements CustomSavable<ArrayList<
     @Override
     public void atBattleStart() {
         super.atBattleStart();
+        hasused=false;
         for (Customyoujisave customyoujisave : this.MonstersEscaped) {
             try {
                 Class  monsterClass = Class.forName(customyoujisave.className.substring(6, customyoujisave.className.length()));
@@ -94,24 +96,35 @@ am2.usePreBattleAction();
             return;
         }
 
-        if (m.currentHealth == 0 && !AbstractDungeon.getMonsters().areMonstersBasicallyDead()&&!m.hasPower(MinionPower.POWER_ID)) {
-            this.flash();
-            this.addToBot(new RelicAboveCreatureAction(m, this));
-            for (AbstractMonster monster : AbstractDungeon.getMonsters().monsters) {
-                if (!monster.isDeadOrEscaped()&&!monster.isDying){
+      this.addToBot(new AbstractGameAction() {
+          @Override
+          public void update() {
+              isDone=true;
+              if (hasused){
+                  return;
+              }
+              if (m.currentHealth == 0 && !AbstractDungeon.getMonsters().areMonstersBasicallyDead()&&!m.hasPower(MinionPower.POWER_ID)) {
+                  ArtOfYouji.this.flash();
+                  this.addToBot(new RelicAboveCreatureAction(m, ArtOfYouji.this));
+                  for (AbstractMonster monster : AbstractDungeon.getMonsters().monsters) {
+                      if (!monster.isDeadOrEscaped()&&!monster.isDying){
 
-                    String chat=Yulu[AbstractDungeon.cardRandomRng.random.nextInt(Yulu.length)];
-                    if (AbstractDungeon.cardRandomRng.randomBoolean(0.45F)) {
-                        AbstractDungeon.effectList.add(new MegaSpeechBubble(monster.hb.cX + monster.dialogX, monster.hb.cY + monster.dialogY, 2.0F, chat, monster.isPlayer));
-                    }
-                    }
+                          String chat=Yulu[AbstractDungeon.cardRandomRng.random.nextInt(Yulu.length)];
+                          if (AbstractDungeon.cardRandomRng.randomBoolean(0.45F)) {
+                              AbstractDungeon.effectList.add(new MegaSpeechBubble(monster.hb.cX + monster.dialogX, monster.hb.cY + monster.dialogY, 2.0F, chat, monster.isPlayer));
+                          }
+                      }
 
-                this.addToBot(new EscapeAction(monster));
-                this.MonstersEscaped.add(new Customyoujisave(monster.getClass().toString(),monster.currentHealth,monster.maxHealth));
-                if (!(monster.currentHealth==0))
-                this.tips.add(new PowerTip(monster.name,"剩余血量："+String.valueOf(monster.currentHealth)));
-                }
-            }
+                      ArtOfYouji.this.addToBot(new EscapeAction(monster));
+                      ArtOfYouji.this.MonstersEscaped.add(new Customyoujisave(monster.getClass().toString(),monster.currentHealth,monster.maxHealth));
+                      if (!(monster.currentHealth==0))
+                          ArtOfYouji.this.tips.add(new PowerTip(monster.name,"剩余血量："+String.valueOf(monster.currentHealth)));
+                      hasused=true;
+                  }
+              }
+          }
+      });
+
 
 
 
